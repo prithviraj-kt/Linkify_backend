@@ -27,6 +27,8 @@ model User {
 model Post {
   @@map(name:"post")
   id Int @id @default(autoincrement())
+  username String
+  college String
   title String
   description String @db.VarChar(500)
   created_at DateTime @default(now())

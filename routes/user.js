@@ -43,7 +43,7 @@ router.get("/getAllUser/:username", async (req, res) => {
         }
     })
 
-    if(!username){
+    if(!findUser){
         return res.status(400).json({
             msg:"USer does not exist"
         })
@@ -55,16 +55,6 @@ router.get("/getAllUser/:username", async (req, res) => {
     })
     res.json(getAllUsersData)
 })
-
-
-
-// router.get("/get/:username/:profileUser", async (req, res) => {
-//     const profileUser = req.params.profileUser
-//     const username = req.params.username
-
-
-// })
-
 
 
 module.exports = router
