@@ -1,20 +1,13 @@
-const express = require("express");
-var cors = require('cors')
-const db = require("./models");
-var app = express()
-
-const port = process.config.ENV||8000;
-app.use(cors());
+const express = require('express')
+const app = express()
+const port = 5000
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: false}))
 
-const postRouter = require("./routes/Posts")
-app.use("/", postRouter)
+app.use("/",require("./routes/auth"))
+app.use("/",require("./routes/user"))
 
-db.sequelize.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
-  });
-});
 
+app.listen(port, () => {
+    console.log(`Port started at port ${port}`)
+})
