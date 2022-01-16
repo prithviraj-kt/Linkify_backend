@@ -38,6 +38,58 @@ router.post("/addpost/:username", async (req, res) => {
 
 })
 
+router.put("/update/:username/:id", async (req, res) => {
+    const username = req.params.username
+    const id = parseInt( req.params.id)
+
+    const userExist = await user.findUnique({
+        where:{
+            username
+        }
+    })
+
+    if(!userExist){
+        return res.status(400).json({
+            msg: "User does not exist exists"
+        })
+    }
+    // try {
+        const postExist = await post.findUnique({
+            where:{
+                id
+            }, select:{
+                username:true,
+                id:true
+            }
+        })
+    
+        if(!postExist){
+            return res.status(400).json({
+                msg: "Post does not exist exists"
+            })
+        }
+    // } catch (error) {
+    //     res.json(error)
+    // }
+    if(postExist.username === username){
+
+        const updatePost = await post.update({
+            where:{
+                id
+            },
+            data:{
+                title: req.body.title,
+                description: req.body.description,
+            }
+        })
+    
+        res.json(updatePost)
+    }else{
+        res.json({msg:"Contents cannot be changed..."})
+    }
+    
+
+})
 
 router.get("/getpost/:username", async (req, res) => {
     const username = req.params.username
@@ -60,9 +112,63 @@ router.get("/getpost/:username", async (req, res) => {
             college:userExist.college
         }
     })
+
     res.json(getAllPost)
 
+})
 
+
+
+router.delete("/delete/:username/:id", async (req, res) => {
+    const username = req.params.username
+    const id = parseInt( req.params.id)
+
+
+
+    const existUser = await user.findUnique({
+        where:{
+            username
+        }
+    })
+
+    if(!existUser){
+        return res.status(400).json({
+            msg:" User does not exist"
+        })
+    }
+
+    const existPost = await post.findUnique({
+        where:{
+            id
+        }, select:{
+            username:true,
+        }
+    })
+
+    if(!existPost){
+        return res.status(400).json({
+            msg:" Post does not exist"
+        })
+    }
+
+    if(username === existPost.username){
+        const deletePost = await post.delete({
+            where:{
+                id
+            }
+        })
+        res.json({
+            deletePost, msg:"Post deleted"
+        })
+    } else{
+        res.json({
+            msg:"Cannot delete post"
+        })
+    }
+
+    // res.json({
+    //     username,id
+    // })
 })
 
 module.exports = router

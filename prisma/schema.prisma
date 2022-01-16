@@ -24,6 +24,13 @@ model User {
   posts Post[]
 }
 
+model Login {
+  @@map(name:"login")
+  id Int @default(autoincrement()) @id
+  username String @db.VarChar(30) @unique
+  pasword String
+}
+
 model Post {
   @@map(name:"post")
   id Int @id @default(autoincrement())
