@@ -17,6 +17,7 @@ model User {
   name String
   username  String   @db.VarChar(30) @unique
   email String
+  position String
   phone String
   college   String
   password  String
@@ -28,7 +29,7 @@ model Login {
   @@map(name:"login")
   id Int @default(autoincrement()) @id
   username String @db.VarChar(30) @unique
-  pasword String
+  password String
 }
 
 model Post {

@@ -17,6 +17,7 @@ router.get("/getUser/:username", async (req, res) => {
       username: true,
       email: true,
       phone: true,
+      position:true,
       college: true,
       password: true,
       confirm_password: true,
@@ -81,6 +82,8 @@ router.get("/getAllUser/:username", async (req, res) => {
     },
     select: {
       college: true,
+      position:true,
+
     },
   });
 

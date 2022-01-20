@@ -3,9 +3,9 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 
 const { user, login } = new PrismaClient();
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 router.post("/addUser", async (req, res) => {
-  const { name, username, email, phone, college, password, confirm_password } =
+  const { name, username, email, phone, position, college, password, confirm_password } =
     req.body;
   const userExist = await user.findUnique({
     where: {
@@ -21,8 +21,8 @@ router.post("/addUser", async (req, res) => {
     });
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const securedPassword = await bcrypt.hash(req.body.password, salt);
+//   const salt = await bcrypt.genSalt(10);
+//   const securedPassword = await bcrypt.hash(req.body.password, salt);
 
   const newUser = await user.create({
     data: {
@@ -30,6 +30,7 @@ router.post("/addUser", async (req, res) => {
       username,
       email,
       phone,
+      position,
       college,
       password,
       confirm_password,
@@ -48,6 +49,10 @@ router.post("/addUser", async (req, res) => {
 
 router.get("/login", async (req, res) => {
   const { username, password } = req.body;
+
+//   const salt = await bcrypt.genSalt(10);
+//   const securedPassword = await bcrypt.hash(req.body.password, salt);
+
   const findUser = await user.findUnique({
     where: {
       username,
