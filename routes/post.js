@@ -171,4 +171,35 @@ router.delete("/delete/:username/:id", async (req, res) => {
     // })
 })
 
+
+router.get("/get/:username", async (req, res) => {
+    const username = req.params.username
+
+    const existUser = await user.findUnique({
+        where:{
+            username
+        }
+    })
+
+    if(!existUser){
+       return res.status(400).json({
+            msg:"User does not exist"
+        })
+    }
+
+    const allPost = await post.findMany({
+        where:{
+            username
+        },select:{
+            title:true,
+            description:true
+        }
+    })
+
+    res.json(allPost)
+
+
+})
+
+
 module.exports = router
