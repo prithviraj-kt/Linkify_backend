@@ -100,4 +100,29 @@ router.get("/getAllUser/:username", async (req, res) => {
   res.json(getAllUsersData);
 });
 
+router.delete("/delete/:username", async (req, res) => {
+  const username = req.params.username
+
+  const UserExist = await user.findUnique({
+    where:{
+      username
+    }
+  })
+
+  if(!UserExist){
+    return res.status(400).json({
+      msg:"User does not exist"
+    })
+  }
+  const deleteUser = await user.delete({
+    where:{
+      username
+    }
+  })
+
+  res.json({
+    msg:"User deleted successfully"
+  })
+})
+
 module.exports = router;

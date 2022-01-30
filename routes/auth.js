@@ -21,9 +21,6 @@ router.post("/addUser", async (req, res) => {
     });
   }
 
-//   const salt = await bcrypt.genSalt(10);
-//   const securedPassword = await bcrypt.hash(req.body.password, salt);
-
   const newUser = await user.create({
     data: {
       name,
@@ -37,14 +34,15 @@ router.post("/addUser", async (req, res) => {
     },
   });
 
-//   const loginDetails = await login.create({
-//       data:{
-//           username,
-//           password:securedPassword
-//       }
-//   })
+  const loginDetails = await login.create({
+      data:{
+          user_name:username,
+          password
+      }
+  })
 
   res.json(newUser);
+
 });
 
 router.get("/login", async (req, res) => {
@@ -53,7 +51,7 @@ router.get("/login", async (req, res) => {
 //   const salt = await bcrypt.genSalt(10);
 //   const securedPassword = await bcrypt.hash(req.body.password, salt);
 
-  const findUser = await user.findUnique({
+  const findUser = await login.findUnique({
     where: {
       username,
     },
@@ -61,6 +59,7 @@ router.get("/login", async (req, res) => {
       password: true,
     },
   });
+  
   if (!findUser) {
     return res.status(400).json({
       msg: "User does not exist",
